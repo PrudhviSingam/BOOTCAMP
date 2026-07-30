@@ -77,6 +77,8 @@ export default function HomePage() {
       <main className="flex-1">
         <Hero />
 
+
+
         {/* Featured Products Section */}
         <section
           id="featured-products"
