@@ -179,7 +179,6 @@ export default function ProductsGrid() {
               name={product.name}
               price={product.price}
               slug={product.slug}
-              category={product.category}
             />
           ))}
         </div>

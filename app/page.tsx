@@ -116,7 +116,6 @@ export default function HomePage() {
                 name={product.name}
                 price={product.price}
                 slug={product.slug}
-                category={product.category}
               />
             ))}
           </div>

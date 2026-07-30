@@ -1,7 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import ProductDetailClient from "./_components/ProductDetailClient";
 
 interface Props {
@@ -50,12 +48,8 @@ export default async function ProductDetailPage({ params }: Props) {
   if (!product) notFound();
 
   return (
-    <>
-      <Navbar />
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
-        <ProductDetailClient product={product} />
-      </main>
-      <Footer />
-    </>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
+      <ProductDetailClient product={product} />
+    </div>
   );
 }
