@@ -1,55 +1,46 @@
 /**
  * app/api/products/[slug]/route.ts
- * GET /api/products/:slug — returns a single product by slug.
+ * GET /api/products/:slug — returns a single product by its slug.
  * Returns 404 JSON if not found.
+ *
+ * Data source: Supabase `products` table, matched on the `slug` column.
  */
 import { type NextRequest } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-// ── Local placeholder data ─────────────────────────────────────
-const PLACEHOLDER_PRODUCTS = [
-  { id: "p1", name: "Wireless Noise-Cancelling Headphones", description: "Premium over-ear headphones with active noise cancellation, 30-hour battery life, and studio-quality sound. Foldable design with plush ear cushions for all-day comfort.", price: 4999, image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80", category: "Electronics", stock: 50, slug: "wireless-noise-cancelling-headphones" },
-  { id: "p2", name: "Mechanical Gaming Keyboard", description: "Compact TKL layout with tactile blue switches, per-key RGB backlighting, and aircraft-grade aluminum frame. Anti-ghosting for precise keystrokes in every session.", price: 3499, image_url: "https://images.unsplash.com/photo-1601445638532-c90e31ece6e6?w=800&q=80", category: "Electronics", stock: 35, slug: "mechanical-gaming-keyboard" },
-  { id: "p3", name: "Minimalist Leather Wallet", description: "Slim bifold wallet crafted from full-grain leather. Holds up to 8 cards plus cash. RFID-blocking lining protects your contactless cards from skimming.", price: 899, image_url: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=800&q=80", category: "Accessories", stock: 120, slug: "minimalist-leather-wallet" },
-  { id: "p4", name: "Stainless Steel Water Bottle", description: "Triple-insulated 750ml bottle keeps drinks cold for 24 hours or hot for 12 hours. BPA-free, leak-proof lid, and scratch-resistant powder coat finish.", price: 1299, image_url: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&q=80", category: "Lifestyle", stock: 200, slug: "stainless-steel-water-bottle" },
-  { id: "p5", name: "Portable Bluetooth Speaker", description: "Compact 20W speaker with 360-degree sound, deep bass, and IPX7 waterproofing. Up to 12 hours of playback. Pair two speakers for stereo mode.", price: 2199, image_url: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80", category: "Electronics", stock: 60, slug: "portable-bluetooth-speaker" },
-  { id: "p6", name: "Organic Cotton Tote Bag", description: "Durable 100% organic cotton canvas tote with reinforced handles and interior zip pocket. Perfect for grocery runs, beach days, or daily commutes.", price: 599, image_url: "https://images.unsplash.com/photo-1597484661973-ee6cd0b6482c?w=800&q=80", category: "Lifestyle", stock: 300, slug: "organic-cotton-tote-bag" },
-  { id: "p7", name: "Smart Fitness Tracker", description: "Slim wrist band with heart rate monitor, SpO2 sensor, sleep tracking, and 7-day battery. Compatible with iOS and Android. Water-resistant to 50m.", price: 3999, image_url: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=800&q=80", category: "Electronics", stock: 80, slug: "smart-fitness-tracker" },
-  { id: "p8", name: "Ceramic Pour-Over Coffee Set", description: "Handcrafted ceramic dripper and server set for the perfect pour-over ritual. Includes reusable stainless steel filter. Holds 600ml, dishwasher-safe.", price: 1799, image_url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80", category: "Kitchen", stock: 45, slug: "ceramic-pour-over-coffee-set" },
-];
-
-// ── Data-fetching function (swap Supabase ↔ placeholder easily) ──
+// ── Data-fetching function ────────────────────────────────────────────────
+/**
+ * Queries the `products` table for a row whose `slug` matches the argument.
+ * Returns the product object, or `null` when no row is found.
+ *
+ * Uses `.maybeSingle()` so that "zero rows" resolves to `null` instead of
+ * throwing a PostgREST error — keeping 404 handling simple in the handler.
+ */
 async function fetchProductBySlug(slug: string) {
-  const supabaseConfigured =
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
+    .maybeSingle();
 
-  if (supabaseConfigured) {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .eq("slug", slug)
-      .single();
-
-    if (error) return null;
-    return data;
-  }
-
-  // Fallback: find in placeholder array
-  return PLACEHOLDER_PRODUCTS.find((p) => p.slug === slug) ?? null;
+  if (error) throw error;
+  return data; // null when no row matches
 }
 
-// ── Route handler ──────────────────────────────────────────────
+// ── Route handler ─────────────────────────────────────────────────────────
 export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
     const { slug } = await params;
-    const product  = await fetchProductBySlug(slug);
+    const product = await fetchProductBySlug(slug);
 
     if (!product) {
-      return Response.json({ error: "Product not found" }, { status: 404 });
+      return Response.json(
+        { error: "Product not found", slug },
+        { status: 404 }
+      );
     }
 
     return Response.json({ product });

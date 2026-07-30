@@ -2,15 +2,21 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ShoppingCart, Menu, X, Zap, Home, Package } from "lucide-react";
+import { ShoppingCart, Menu, X, Zap, Home, Package, LogIn, LogOut, User, ChevronDown } from "lucide-react";
+import { useAuth, signInWithGoogle, signOutUser } from "@/lib/firebase";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  // Use our Firebase auth hook
+  const { user, loading } = useAuth();
+  
   const itemCount = 0;
 
   const navLinks = [
-    { name: "Home", href: "#", icon: Home },
-    { name: "Products", href: "#", icon: Package },
+    { name: "Home", href: "/", icon: Home },
+    { name: "Products", href: "/products", icon: Package },
   ];
 
   return (
@@ -20,7 +26,7 @@ export default function Navbar() {
           {/* Store Logo / Name (Left) */}
           <div className="flex items-center">
             <Link
-              href="#"
+              href="/"
               className="flex items-center gap-2 group transition-opacity hover:opacity-90"
               aria-label="NexCart Store"
             >
@@ -50,8 +56,76 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* Right Section: Cart & Mobile Menu Toggle */}
+          {/* Right Section: Auth, Cart & Mobile Menu Toggle */}
           <div className="flex items-center gap-3">
+            
+            {/* Auth UI */}
+            {loading ? (
+              <div className="w-9 h-9 rounded-full bg-border animate-pulse" />
+            ) : user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center gap-2 p-1 pr-2 rounded-full border border-border hover:border-primary/50 bg-surface transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  aria-label="User menu"
+                  aria-expanded={isDropdownOpen}
+                >
+                  {user.photoURL ? (
+                    <img 
+                      src={user.photoURL} 
+                      alt={user.displayName || "User"} 
+                      width={32} 
+                      height={32} 
+                      className="rounded-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                      <User className="w-4 h-4" />
+                    </div>
+                  )}
+                  <span className="text-sm font-medium text-foreground max-w-[100px] truncate hidden sm:block">
+                    {user.displayName?.split(" ")[0] || "User"}
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-muted hidden sm:block" />
+                </button>
+
+                {isDropdownOpen && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-40" 
+                      onClick={() => setIsDropdownOpen(false)} 
+                      aria-hidden="true"
+                    />
+                    <div className="absolute right-0 mt-2 w-56 bg-surface border border-border rounded-xl shadow-lg overflow-hidden animate-fade-in z-50">
+                      <div className="p-3 border-b border-border">
+                        <p className="text-sm font-semibold text-foreground truncate">{user.displayName || "User"}</p>
+                        <p className="text-xs text-muted truncate">{user.email}</p>
+                      </div>
+                      <button
+                        onClick={async () => {
+                          await signOutUser();
+                          setIsDropdownOpen(false);
+                        }}
+                        className="w-full flex items-center gap-2 px-4 py-3 text-sm text-red-500 hover:bg-red-500/10 transition-colors text-left font-medium"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={signInWithGoogle}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-primary text-white text-sm font-semibold hover:opacity-90 active:scale-95 transition-all duration-150 shadow-sm"
+              >
+                <LogIn className="w-4 h-4" />
+                <span className="hidden sm:inline">Sign in</span>
+              </button>
+            )}
+
             {/* Shopping Cart Icon with Item-Count Badge */}
             <button
               type="button"
@@ -106,4 +180,3 @@ export default function Navbar() {
     </header>
   );
 }
-

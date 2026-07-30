@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
   ShoppingBag,
-  Github,
-  Twitter,
+  Globe,
+  MessageCircle,
   Mail,
   MapPin,
   Phone,
@@ -28,8 +28,8 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { href: "https://github.com",  icon: Github,  label: "GitHub"  },
-    { href: "https://twitter.com", icon: Twitter, label: "Twitter" },
+    { href: "https://github.com",  icon: Globe,         label: "GitHub"  },
+    { href: "https://twitter.com", icon: MessageCircle, label: "Twitter" },
     { href: "mailto:hello@nexcart.dev", icon: Mail, label: "Email" },
   ];
 
