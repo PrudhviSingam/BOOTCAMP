@@ -13,7 +13,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const {
       user_id,
-      items,           // [{ product_id, quantity, price }]
+      items,
+      cart_items,
+      shipping,
       shipping_name,
       shipping_address,
       shipping_city,
@@ -21,63 +23,81 @@ export async function POST(request: NextRequest) {
       shipping_phone,
     } = body;
 
-    if (!user_id || !items?.length) {
+    const itemList = items || cart_items;
+
+    if (!user_id || !Array.isArray(itemList) || itemList.length === 0) {
       return Response.json(
         { error: "user_id and items are required" },
         { status: 400 }
       );
     }
 
-    const total_amount = items.reduce(
+    const name = shipping_name ?? shipping?.name ?? shipping?.shipping_name ?? null;
+    const address = shipping_address ?? shipping?.address ?? shipping?.shipping_address ?? null;
+    const city = shipping_city ?? shipping?.city ?? shipping?.shipping_city ?? null;
+    const postal_code = shipping_postal_code ?? shipping?.postal_code ?? shipping?.shipping_postal_code ?? null;
+    const phone = shipping_phone ?? shipping?.phone ?? shipping?.shipping_phone ?? null;
+
+    // Calculate total amount
+    const total_amount = itemList.reduce(
       (sum: number, item: { quantity: number; price: number }) =>
-        sum + item.quantity * item.price,
+        sum + Number(item.quantity) * Number(item.price),
       0
     );
 
-    // 1) Insert order
+    // 1) Insert new row into orders with status "pending" and shipping fields
     const { data: order, error: orderError } = await supabase
       .from("orders")
       .insert({
         user_id,
         status: "pending",
         total_amount,
-        shipping_name,
-        shipping_address,
-        shipping_city,
-        shipping_postal_code,
-        shipping_phone,
+        shipping_name: name,
+        shipping_address: address,
+        shipping_city: city,
+        shipping_postal_code: postal_code,
+        shipping_phone: phone,
       })
       .select()
       .single();
 
-    if (orderError) throw orderError;
+    if (orderError || !order) {
+      console.error("[/api/orders POST] Order insert error:", orderError);
+      return Response.json({ error: "Failed to create order" }, { status: 500 });
+    }
 
-    // 2) Insert order_items
-    const orderItems = items.map((item: { product_id: string; quantity: number; price: number }) => ({
-      order_id:   order.id,
+    // 2) Insert matching rows into order_items linked to that order
+    const orderItems = itemList.map((item: { product_id: string; quantity: number; price: number }) => ({
+      order_id: order.id,
       product_id: item.product_id,
-      quantity:   item.quantity,
-      price:      item.price,
+      quantity: Number(item.quantity),
+      price: Number(item.price),
     }));
 
     const { error: itemsError } = await supabase
       .from("order_items")
       .insert(orderItems);
 
-    if (itemsError) throw itemsError;
+    if (itemsError) {
+      console.error("[/api/orders POST] Order items insert error:", itemsError);
+      return Response.json({ error: "Failed to create order items" }, { status: 500 });
+    }
 
-    // 3) Clear the user's cart
+    // 3) Clear the user's cart_items rows
     const { error: cartError } = await supabase
       .from("cart_items")
       .delete()
       .eq("user_id", user_id);
 
-    if (cartError) console.warn("[/api/orders] Cart clear failed:", cartError);
+    if (cartError) {
+      console.warn("[/api/orders POST] Cart clear failed:", cartError);
+    }
 
-    return Response.json({ success: true, order_id: order.id }, { status: 201 });
+    // 4) Return the new order's id
+    return Response.json({ success: true, order_id: order.id, id: order.id }, { status: 201 });
   } catch (error) {
     console.error("[/api/orders POST]", error);
-    return Response.json({ error: "Failed to create order" }, { status: 500 });
+    return Response.json({ error: "Failed to process order" }, { status: 500 });
   }
 }
 
