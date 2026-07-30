@@ -1,65 +1,147 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
+import ProductCard from "@/components/ProductCard";
+import Footer from "@/components/Footer";
+import Link from "next/link";
+import { ArrowRight, Zap } from "lucide-react";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "NexCart — Premium Products, Fast Delivery",
+};
+
+// Placeholder featured products — replaced by real Supabase data in T11
+const FEATURED_PRODUCTS = [
+  {
+    slug: "wireless-noise-cancelling-headphones",
+    name: "Wireless Noise-Cancelling Headphones",
+    price: 4999,
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80",
+    category: "Electronics",
+  },
+  {
+    slug: "mechanical-gaming-keyboard",
+    name: "Mechanical Gaming Keyboard",
+    price: 3499,
+    image: "https://images.unsplash.com/photo-1601445638532-c90e31ece6e6?w=600&q=80",
+    category: "Electronics",
+  },
+  {
+    slug: "minimalist-leather-wallet",
+    name: "Minimalist Leather Wallet",
+    price: 899,
+    image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=600&q=80",
+    category: "Accessories",
+  },
+  {
+    slug: "stainless-steel-water-bottle",
+    name: "Stainless Steel Water Bottle",
+    price: 1299,
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600&q=80",
+    category: "Lifestyle",
+  },
+  {
+    slug: "portable-bluetooth-speaker",
+    name: "Portable Bluetooth Speaker",
+    price: 2199,
+    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80",
+    category: "Electronics",
+  },
+  {
+    slug: "organic-cotton-tote-bag",
+    name: "Organic Cotton Tote Bag",
+    price: 599,
+    image: "https://images.unsplash.com/photo-1597484661973-ee6cd0b6482c?w=600&q=80",
+    category: "Lifestyle",
+  },
+  {
+    slug: "smart-fitness-tracker",
+    name: "Smart Fitness Tracker",
+    price: 3999,
+    image: "https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=600&q=80",
+    category: "Electronics",
+  },
+  {
+    slug: "ceramic-pour-over-coffee-set",
+    name: "Ceramic Pour-Over Coffee Set",
+    price: 1799,
+    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80",
+    category: "Kitchen",
+  },
+];
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <>
+      <Navbar />
+      <main className="flex-1">
+        <Hero />
+
+        {/* ================= TEMPORARY DEMO BLOCK — remove once confirmed ================= */}
+        <section className="max-w-3xl mx-auto px-4 py-12">
+          <h2 className="text-xl font-bold text-foreground mb-6">
+            Design System Demo (remove after confirmation)
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="rounded-xl p-4 bg-primary text-primary-foreground text-center text-xs font-medium">Primary</div>
+            <div className="rounded-xl p-4 bg-secondary text-secondary-foreground text-center text-xs font-medium">Secondary</div>
+            <div className="rounded-xl p-4 bg-accent text-white text-center text-xs font-medium">Accent</div>
+            <div className="rounded-xl p-4 bg-surface text-foreground border border-border text-center text-xs font-medium">Surface</div>
+            <div className="rounded-xl p-4 bg-success text-white text-center text-xs font-medium">Success</div>
+            <div className="rounded-xl p-4 bg-error text-white text-center text-xs font-medium">Error</div>
+            <div className="rounded-xl p-4 bg-muted text-white text-center text-xs font-medium">Muted</div>
+            <div className="rounded-xl p-4 bg-background text-foreground border border-border text-center text-xs font-medium flex items-center justify-center gap-2">
+              <Zap className="w-4 h-4 text-primary" aria-hidden="true" />
+              Icon
+            </div>
+          </div>
+        </section>
+        {/* ================= END TEMPORARY DEMO BLOCK ================= */}
+
+        {/* Featured Products Section */}
+        <section
+          id="featured-products"
+          className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
+          aria-label="Featured products"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+            <div>
+              <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-2">
+                Hand-picked for you
+              </p>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground">
+                Featured Products
+              </h2>
+            </div>
+            <Link
+              href="/products"
+              id="homepage-view-all-btn"
+              className="group inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+              aria-label="View all products"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              View all
+              <ArrowRight
+                className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                aria-hidden="true"
+              />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {FEATURED_PRODUCTS.map((product) => (
+              <ProductCard
+                key={product.slug}
+                image={product.image}
+                name={product.name}
+                price={product.price}
+                slug={product.slug}
+                category={product.category}
+              />
+            ))}
+          </div>
+        </section>
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
