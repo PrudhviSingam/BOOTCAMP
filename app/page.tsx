@@ -4,7 +4,7 @@ import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { ArrowRight, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "NexCart — Premium Products, Fast Delivery",
@@ -76,27 +76,6 @@ export default function HomePage() {
       <Navbar />
       <main className="flex-1">
         <Hero />
-
-        {/* ================= TEMPORARY DEMO BLOCK — remove once confirmed ================= */}
-        <section className="max-w-3xl mx-auto px-4 py-12">
-          <h2 className="text-xl font-bold text-foreground mb-6">
-            Design System Demo (remove after confirmation)
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="rounded-xl p-4 bg-primary text-primary-foreground text-center text-xs font-medium">Primary</div>
-            <div className="rounded-xl p-4 bg-secondary text-secondary-foreground text-center text-xs font-medium">Secondary</div>
-            <div className="rounded-xl p-4 bg-accent text-white text-center text-xs font-medium">Accent</div>
-            <div className="rounded-xl p-4 bg-surface text-foreground border border-border text-center text-xs font-medium">Surface</div>
-            <div className="rounded-xl p-4 bg-success text-white text-center text-xs font-medium">Success</div>
-            <div className="rounded-xl p-4 bg-error text-white text-center text-xs font-medium">Error</div>
-            <div className="rounded-xl p-4 bg-muted text-white text-center text-xs font-medium">Muted</div>
-            <div className="rounded-xl p-4 bg-background text-foreground border border-border text-center text-xs font-medium flex items-center justify-center gap-2">
-              <Zap className="w-4 h-4 text-primary" aria-hidden="true" />
-              Icon
-            </div>
-          </div>
-        </section>
-        {/* ================= END TEMPORARY DEMO BLOCK ================= */}
 
         {/* Featured Products Section */}
         <section
