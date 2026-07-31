@@ -202,21 +202,41 @@ export default function CheckoutClient() {
   }
 
   async function handleRetry() {
-    if (!orderId || !rzpOrderId) {
+    if (!orderId) {
       setStep("form");
       return;
     }
     setStep("loading");
     try {
+      // 1) Verify current status via /api/order-status/[id]
+      const statusRes = await fetch(`/api/order-status/${orderId}`);
+      const statusData = await statusRes.json();
+      const currentStatus = statusData.order?.status || statusData.status;
+
+      if (currentStatus === "paid") {
+        setStep("success");
+        await clearCart();
+        router.push(`/order-confirmation/${orderId}`);
+        return;
+      }
+
+      // 2) Re-create/fetch Razorpay order for same orderId
       const rzpRes = await fetch("/api/create-razorpay-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ order_id: orderId }),
       });
       const rzpData = await rzpRes.json();
+
+      if (!rzpRes.ok || !rzpData.razorpay_order_id) {
+        throw new Error(rzpData.error ?? "Failed to re-open payment gateway.");
+      }
+
+      setRzpOrderId(rzpData.razorpay_order_id);
       await openRazorpayPopup(orderId, rzpData.razorpay_order_id, rzpData.amount);
-    } catch {
-      setErrorMsg("Failed to re-open payment. Please refresh and try again.");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Payment was not completed. You can try again.";
+      setErrorMsg(msg);
       setStep("error");
     }
   }
@@ -256,7 +276,23 @@ export default function CheckoutClient() {
     );
   }
 
-  // ── Error ─────────────────────────────────────────────────
+  // ── Success ───────────────────────────────────────────────
+  if (step === "success") {
+    return (
+      <div className="flex flex-col items-center gap-6 py-24 text-center max-w-md mx-auto">
+        <span className="w-16 h-16 rounded-full bg-success/10 border border-success/30 flex items-center justify-center">
+          <CheckCircle className="w-8 h-8 text-success" aria-hidden="true" />
+        </span>
+        <div>
+          <p className="text-xl font-bold text-foreground mb-2">Payment Successful!</p>
+          <p className="text-sm text-muted">Redirecting to order confirmation...</p>
+        </div>
+        <Loader2 className="w-6 h-6 text-primary animate-spin" aria-hidden="true" />
+      </div>
+    );
+  }
+
+  // ── Error / Pending Retry ─────────────────────────────────
   if (step === "error") {
     return (
       <div className="flex flex-col items-center gap-6 py-24 text-center max-w-md mx-auto">
@@ -265,20 +301,20 @@ export default function CheckoutClient() {
         </span>
         <div>
           <p className="text-lg font-semibold text-foreground mb-2">Payment Incomplete</p>
-          <p className="text-sm text-muted">{errorMsg}</p>
+          <p className="text-sm text-muted">{errorMsg || "Payment was not completed. You can try again."}</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-3">
           <button
             id="checkout-retry-btn"
             onClick={handleRetry}
-            className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold"
+            className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity"
           >
             <RefreshCw className="w-4 h-4" aria-hidden="true" />
             Try Again
           </button>
           <button
             onClick={() => setStep("form")}
-            className="px-6 py-2.5 rounded-xl bg-surface border border-border text-sm font-medium text-muted hover:text-foreground"
+            className="px-6 py-2.5 rounded-xl bg-surface border border-border text-sm font-medium text-muted hover:text-foreground transition-colors"
           >
             Edit Order
           </button>
