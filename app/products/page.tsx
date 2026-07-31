@@ -59,11 +59,12 @@ export default function ProductsPage() {
         <div className="flex flex-col sm:flex-row w-full md:w-auto gap-4">
           <div className="relative w-full sm:w-72">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-foreground/50" />
+              <Search className="h-5 w-5 text-foreground/50" aria-hidden="true" />
             </div>
             <input
               type="text"
               placeholder="Search products..."
+              aria-label="Search products"
               className="w-full pl-10 pr-4 py-2.5 border border-border rounded-xl bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-200 shadow-sm"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -72,6 +73,7 @@ export default function ProductsPage() {
           
           <div className="relative w-full sm:w-56">
             <select
+              aria-label="Filter by category"
               className="w-full px-4 py-2.5 border border-border rounded-xl bg-surface text-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-200 appearance-none shadow-sm cursor-pointer"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -82,7 +84,7 @@ export default function ProductsPage() {
               ))}
             </select>
             <div className="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none text-foreground/50">
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
+              <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20" aria-hidden="true">
                 <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
               </svg>
             </div>
@@ -91,7 +93,7 @@ export default function ProductsPage() {
       </div>
 
       {loading ? (
-        <div className="flex justify-center items-center py-32">
+        <div className="flex justify-center items-center py-32" role="status" aria-label="Loading products">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary border-t-transparent"></div>
         </div>
       ) : products.length > 0 ? (
@@ -109,7 +111,7 @@ export default function ProductsPage() {
       ) : (
         <div className="flex flex-col items-center justify-center py-32 bg-surface rounded-3xl border border-border shadow-sm text-center px-4">
           <div className="bg-background p-4 rounded-full mb-4">
-            <Search className="h-8 w-8 text-foreground/40" />
+            <Search className="h-8 w-8 text-foreground/40" aria-hidden="true" />
           </div>
           <h3 className="text-xl font-semibold text-foreground mb-2">No products found</h3>
           <p className="text-foreground/60 mb-6 max-w-md">

@@ -10,7 +10,7 @@
  */
 import { type NextRequest } from "next/server";
 import { createHmac } from "crypto";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
@@ -43,15 +43,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Update the order to paid
-    const { error: updateError } = await supabase
+    const { data: updatedOrders, error: updateError } = await supabase
       .from("orders")
       .update({
         status:               "paid",
         razorpay_payment_id,
       })
-      .eq("razorpay_order_id", razorpay_order_id);
+      .eq("razorpay_order_id", razorpay_order_id)
+      .select();
 
     if (updateError) throw updateError;
+
+    if (!updatedOrders || updatedOrders.length === 0) {
+      console.error("[/api/verify-razorpay-payment] Order not found or update failed for razorpay_order_id:", razorpay_order_id);
+      return Response.json({ error: "Order not found or update failed" }, { status: 404 });
+    }
 
     return Response.json({ success: true });
   } catch (error) {

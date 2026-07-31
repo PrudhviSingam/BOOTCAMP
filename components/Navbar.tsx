@@ -133,6 +133,7 @@ export default function Navbar() {
                       className={`w-4 h-4 text-muted transition-transform duration-200 ${
                         isProfileOpen ? "rotate-180" : ""
                       }`}
+                      aria-hidden="true"
                     />
                   </button>
 
