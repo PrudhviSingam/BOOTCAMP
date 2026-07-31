@@ -100,14 +100,14 @@ export default function OrderConfirmationClient({ orderId }: { orderId: string }
       <div className="bg-surface rounded-2xl border border-border p-6 space-y-4">
         <h2 className="font-semibold text-foreground">Order Details</h2>
         <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-          <div>
+          <div className="min-w-0">
             <dt className="text-muted text-xs">Order ID</dt>
-            <dd className="font-mono text-foreground text-xs truncate">{order.id}</dd>
+            <dd className="font-mono text-foreground text-xs break-all">{order.id}</dd>
           </div>
           {order.razorpay_payment_id && (
-            <div>
+            <div className="min-w-0">
               <dt className="text-muted text-xs">Payment ID</dt>
-              <dd className="font-mono text-foreground text-xs truncate">{order.razorpay_payment_id}</dd>
+              <dd className="font-mono text-foreground text-xs break-all">{order.razorpay_payment_id}</dd>
             </div>
           )}
           <div>
@@ -165,7 +165,7 @@ export default function OrderConfirmationClient({ orderId }: { orderId: string }
         <Link
           href="/products"
           id="order-confirm-continue-btn"
-          className="group inline-flex items-center gap-2 px-7 py-3 rounded-xl gradient-primary text-white font-semibold text-sm hover:opacity-90 active:scale-95 transition-all"
+          className="group inline-flex items-center justify-center gap-2 px-7 py-3 min-h-[48px] rounded-xl gradient-primary text-white font-semibold text-sm hover:opacity-90 active:scale-95 transition-all"
         >
           Continue Shopping
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />

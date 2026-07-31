@@ -49,7 +49,7 @@ export default function ProductCard({ image, name, price, slug }: ProductCardPro
         <Link
           href={`/products/${slug}`}
           id={`product-card-${slug}`}
-          className="group/btn flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold hover:opacity-90 active:scale-95 transition-all duration-150"
+          className="group/btn flex items-center justify-center gap-2 w-full px-4 py-2.5 min-h-[44px] rounded-xl gradient-primary text-white text-sm font-semibold hover:opacity-90 active:scale-95 transition-all duration-150"
           aria-label={`View product: ${name}`}
         >
           View Product

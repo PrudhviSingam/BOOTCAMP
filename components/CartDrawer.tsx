@@ -140,18 +140,18 @@ export default function CartDrawer() {
                     </p>
 
                     {/* Quantity & remove row */}
-                    <div className="flex items-center gap-2 mt-1">
-                      <div className="flex items-center gap-1 bg-background rounded-lg border border-border overflow-hidden">
+                    <div className="flex items-center gap-3 mt-2">
+                      <div className="flex items-center bg-background rounded-lg border border-border overflow-hidden">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           aria-label={`Decrease quantity of ${item.name}`}
                           disabled={item.quantity <= 1}
-                          className="w-7 h-7 flex items-center justify-center text-muted hover:text-foreground hover:bg-surface disabled:opacity-40 transition-colors"
+                          className="w-9 h-9 flex items-center justify-center text-muted hover:text-foreground hover:bg-surface disabled:opacity-40 transition-colors"
                         >
-                          <Minus className="w-3 h-3" aria-hidden="true" />
+                          <Minus className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
                         <span
-                          className="w-6 text-center text-sm font-semibold text-foreground"
+                          className="w-8 text-center text-sm font-semibold text-foreground"
                           aria-label={`Quantity: ${item.quantity}`}
                         >
                           {item.quantity}
@@ -159,17 +159,17 @@ export default function CartDrawer() {
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           aria-label={`Increase quantity of ${item.name}`}
-                          className="w-7 h-7 flex items-center justify-center text-muted hover:text-foreground hover:bg-surface transition-colors"
+                          className="w-9 h-9 flex items-center justify-center text-muted hover:text-foreground hover:bg-surface transition-colors"
                         >
-                          <Plus className="w-3 h-3" aria-hidden="true" />
+                          <Plus className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
                       </div>
                       <button
                         onClick={() => removeFromCart(item.id)}
                         aria-label={`Remove ${item.name} from cart`}
-                        className="w-7 h-7 flex items-center justify-center rounded-lg text-muted hover:text-error hover:bg-error/10 transition-colors"
+                        className="w-9 h-9 flex items-center justify-center rounded-lg text-muted hover:text-error hover:bg-error/10 transition-colors"
                       >
-                        <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
+                        <Trash2 className="w-4 h-4" aria-hidden="true" />
                       </button>
                     </div>
                   </div>

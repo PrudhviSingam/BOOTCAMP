@@ -58,7 +58,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         Back to Products
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
         {/* Image */}
         <div className="relative aspect-square rounded-2xl overflow-hidden bg-surface border border-border">
           <Image
@@ -72,17 +72,17 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         </div>
 
         {/* Details */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-5 sm:gap-6">
           {/* Category badge */}
           {product.category && (
             <span className="inline-flex items-center gap-1.5 w-fit px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 text-xs font-semibold text-primary">
-              <Package className="w-3 h-3" aria-hidden="true" />
+              <Package className="w-3.5 h-3.5" aria-hidden="true" />
               {product.category}
             </span>
           )}
 
           {/* Name */}
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground leading-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-foreground leading-tight tracking-tight">
             {product.name}
           </h1>
 
@@ -97,11 +97,11 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 />
               ))}
             </div>
-            <span className="text-sm text-muted">(124 reviews)</span>
+            <span className="text-xs sm:text-sm text-muted">(124 reviews)</span>
           </div>
 
           {/* Price */}
-          <p className="text-3xl font-bold text-primary">
+          <p className="text-2xl sm:text-3xl font-bold text-primary">
             ₹{product.price.toLocaleString("en-IN")}
           </p>
 
@@ -109,16 +109,16 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           <p className="text-sm text-muted leading-relaxed">{product.description}</p>
 
           {/* Stock */}
-          <p className={`text-sm font-medium ${product.stock > 0 ? "text-success" : "text-error"}`}>
+          <p className={`text-xs sm:text-sm font-medium ${product.stock > 0 ? "text-success" : "text-error"}`}>
             {product.stock > 0
               ? `In Stock — ${product.stock} units available`
               : "Out of Stock"}
           </p>
 
           {/* Quantity selector */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 py-1">
             <span className="text-sm text-muted font-medium">Quantity</span>
-            <div className="flex items-center gap-1 bg-surface border border-border rounded-xl overflow-hidden">
+            <div className="flex items-center bg-surface border border-border rounded-xl overflow-hidden">
               <button
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 disabled={quantity <= 1}
@@ -128,7 +128,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 <Minus className="w-4 h-4" aria-hidden="true" />
               </button>
               <span
-                className="w-10 text-center font-semibold text-foreground"
+                className="w-10 text-center font-semibold text-foreground text-sm"
                 aria-label={`Quantity: ${quantity}`}
               >
                 {quantity}
@@ -145,12 +145,12 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           </div>
 
           {/* Add to Cart button */}
-          <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               id="product-detail-add-to-cart-btn"
               onClick={handleAddToCart}
               disabled={loading || product.stock === 0}
-              className={`group flex items-center justify-center gap-2 flex-1 py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed ${
+              className={`group flex items-center justify-center gap-2 flex-1 min-h-[48px] py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed ${
                 added
                   ? "bg-success text-white"
                   : "gradient-primary text-white hover:opacity-90 active:scale-95"
@@ -183,7 +183,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             <Link
               href="/checkout"
               id="product-detail-buy-now-btn"
-              className="flex items-center justify-center gap-2 flex-1 py-3.5 rounded-xl bg-surface border border-border text-foreground font-semibold text-sm hover:border-primary/40 transition-colors"
+              className="flex items-center justify-center gap-2 flex-1 min-h-[48px] py-3.5 rounded-xl bg-surface border border-border text-foreground font-semibold text-sm hover:border-primary/40 transition-colors"
             >
               Buy Now
             </Link>
