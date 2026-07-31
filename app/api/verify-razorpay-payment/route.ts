@@ -43,17 +43,19 @@ export async function POST(request: NextRequest) {
     }
 
     // Update the order to paid
-    const { error: updateError } = await supabase
+    const { data: updatedOrder, error: updateError } = await supabase
       .from("orders")
       .update({
         status:               "paid",
         razorpay_payment_id,
       })
-      .eq("razorpay_order_id", razorpay_order_id);
+      .eq("razorpay_order_id", razorpay_order_id)
+      .select("id")
+      .single();
 
     if (updateError) throw updateError;
 
-    return Response.json({ success: true });
+    return Response.json({ success: true, order_id: updatedOrder?.id ?? null });
   } catch (error) {
     console.error("[/api/verify-razorpay-payment]", error);
     return Response.json({ error: "Verification failed" }, { status: 500 });

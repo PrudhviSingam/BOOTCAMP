@@ -115,10 +115,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [refreshCart]);
 
-  // ── Clear cart (called after order creation) ─────────────────
+  // ── Clear cart (called after successful payment verification) ──
   const clearCart = useCallback(async () => {
+    // Delete every cart item from Supabase via the existing DELETE endpoint
+    await Promise.all(
+      items.map((item) =>
+        fetch(`/api/cart?id=${encodeURIComponent(item.id)}`, { method: "DELETE" })
+      )
+    );
     setItems([]);
-  }, []);
+  }, [items]);
 
   const cartCount = items.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal  = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
