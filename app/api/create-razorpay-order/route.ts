@@ -41,10 +41,11 @@ export async function POST(request: NextRequest) {
     const amountPaise = Math.round(order.total_amount * 100);
 
     // 2) Reuse an existing Razorpay order if one was already created for this
-    //    order (e.g. on retry), otherwise create a new one.
+    //    order (e.g. on retry) to prevent duplicate orders and double-charge risk.
     let razorpayOrderId = order.razorpay_order_id;
 
     if (!razorpayOrderId) {
+      // 3) Create a new Razorpay order (first attempt only)
       const rzpOrder = await razorpay.orders.create({
         amount:   amountPaise,
         currency: "INR",
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
       });
       razorpayOrderId = rzpOrder.id;
 
-      // 3) Save the Razorpay order ID back into our Supabase order
+      // 4) Save the Razorpay order ID back into our Supabase order
       const { error: updateError } = await supabase
         .from("orders")
         .update({ razorpay_order_id: razorpayOrderId })

@@ -117,14 +117,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // ── Clear cart (called after successful payment verification) ──
   const clearCart = useCallback(async () => {
-    // Delete every cart item from Supabase via the existing DELETE endpoint
+    // Delete every cart item from Supabase via the existing DELETE endpoint.
+    // The /api/orders POST also clears server-side, but this ensures consistency
+    // even if the user clears mid-session before an order is created.
     await Promise.all(
       items.map((item) =>
         fetch(`/api/cart?id=${encodeURIComponent(item.id)}`, { method: "DELETE" })
       )
     );
     setItems([]);
-  }, [items]);
+    // Re-sync with the server to confirm the cart is truly empty
+    // and keep the badge at 0 across refreshes.
+    await refreshCart();
+  }, [items, refreshCart]);
 
   const cartCount = items.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal  = items.reduce((acc, item) => acc + item.price * item.quantity, 0);

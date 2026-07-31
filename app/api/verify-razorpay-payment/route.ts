@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Payment verification failed" }, { status: 400 });
     }
 
-    // Update the order to paid
+    // Update the order to paid — use .select() to confirm a row was actually matched
     const { data: updatedOrder, error: updateError } = await supabase
       .from("orders")
       .update({
@@ -55,7 +55,12 @@ export async function POST(request: NextRequest) {
 
     if (updateError) throw updateError;
 
-    return Response.json({ success: true, order_id: updatedOrder?.id ?? null });
+    if (!updatedOrder) {
+      console.error("[verify-razorpay-payment] No order row matched razorpay_order_id:", razorpay_order_id);
+      return Response.json({ error: "Order not found for this payment" }, { status: 404 });
+    }
+
+    return Response.json({ success: true, order_id: updatedOrder.id });
   } catch (error) {
     console.error("[/api/verify-razorpay-payment]", error);
     return Response.json({ error: "Verification failed" }, { status: 500 });
