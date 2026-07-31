@@ -14,9 +14,11 @@ import {
   LogOut,
   ChevronDown,
   User as UserIcon,
+  ShieldCheck,
 } from "lucide-react";
 import { useAuth, signInWithGoogle, signOutUser } from "@/lib/firebase";
 import { useCart } from "@/contexts/CartContext";
+import { isAdmin } from "@/lib/isAdmin";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,6 +42,7 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/", icon: Home },
     { name: "Products", href: "/products", icon: Package },
+    ...(user && isAdmin(user.email) ? [{ name: "Admin", href: "/admin", icon: ShieldCheck }] : []),
   ];
 
   return (
@@ -147,6 +150,16 @@ export default function Navbar() {
                           <p className="text-xs text-muted truncate">{user.email}</p>
                         )}
                       </div>
+                      {isAdmin(user.email) && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-background transition-colors mb-1"
+                        >
+                          <ShieldCheck className="w-4 h-4 text-primary" aria-hidden="true" />
+                          <span>Admin Portal</span>
+                        </Link>
+                      )}
                       <button
                         type="button"
                         onClick={async () => {
