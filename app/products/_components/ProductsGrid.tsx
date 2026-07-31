@@ -118,7 +118,7 @@ export default function ProductsGrid() {
         <button
           type="submit"
           id="products-search-btn"
-          className="px-5 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+          className="px-5 py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
         >
           Search
         </button>

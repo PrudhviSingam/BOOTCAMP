@@ -39,7 +39,7 @@ export default function CartDrawer() {
       {/* Backdrop */}
       <div
         aria-hidden="true"
-        className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm animate-fade-in"
+        className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm animate-fade-in"
         onClick={() => setDrawerOpen(false)}
       />
 
@@ -72,7 +72,7 @@ export default function CartDrawer() {
           {!user ? (
             <div className="flex flex-col items-center justify-center h-full gap-4 px-6 text-center">
               <span className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center">
-                <LogIn className="w-8 h-8 text-white" aria-hidden="true" />
+                <LogIn className="w-8 h-8 text-primary-foreground" aria-hidden="true" />
               </span>
               <div>
                 <p className="font-semibold text-foreground mb-1">Sign in to view your cart</p>
@@ -81,7 +81,7 @@ export default function CartDrawer() {
               <button
                 id="cart-drawer-signin-btn"
                 onClick={signInWithGoogle}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
               >
                 <LogIn className="w-4 h-4" aria-hidden="true" />
                 Sign in with Google
@@ -193,7 +193,7 @@ export default function CartDrawer() {
               href="/checkout"
               id="cart-drawer-checkout-btn"
               onClick={() => setDrawerOpen(false)}
-              className="group flex items-center justify-center gap-2 w-full py-3 rounded-xl gradient-primary text-white font-semibold text-sm hover:opacity-90 active:scale-95 transition-all"
+              className="group flex items-center justify-center gap-2 w-full py-3 rounded-xl gradient-primary text-primary-foreground font-semibold text-sm hover:opacity-90 active:scale-95 transition-all"
             >
               Proceed to Checkout
               <ArrowRight

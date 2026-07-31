@@ -35,7 +35,7 @@ export default function ProductNotFound() {
             <Link
               href="/products"
               id="not-found-browse-products"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl gradient-primary text-white font-semibold text-sm hover:opacity-90 active:scale-95 transition-all duration-150"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl gradient-primary text-primary-foreground font-semibold text-sm hover:opacity-90 active:scale-95 transition-all duration-150"
             >
               <Search className="w-4 h-4" aria-hidden="true" />
               Browse All Products

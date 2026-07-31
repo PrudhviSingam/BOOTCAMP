@@ -15,7 +15,7 @@ export default function CartPageClient() {
     return (
       <div className="flex flex-col items-center gap-6 py-24 text-center">
         <span className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center">
-          <ShoppingCart className="w-8 h-8 text-white" aria-hidden="true" />
+          <ShoppingCart className="w-8 h-8 text-primary-foreground" aria-hidden="true" />
         </span>
         <div>
           <p className="text-lg font-semibold text-foreground mb-1">Sign in to view your cart</p>
@@ -24,7 +24,7 @@ export default function CartPageClient() {
         <button
           id="cart-page-signin-btn"
           onClick={signInWithGoogle}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold"
+          className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold"
         >
           Sign in with Google
         </button>
@@ -102,7 +102,7 @@ export default function CartPageClient() {
           <span className="font-bold text-xl text-foreground">₹{subtotal.toLocaleString("en-IN")}</span>
         </div>
         <p className="text-xs text-muted">Shipping &amp; taxes calculated at checkout.</p>
-        <Link href="/checkout" id="cart-page-checkout-btn" className="group flex items-center justify-center gap-2 w-full py-3.5 rounded-xl gradient-primary text-white font-semibold text-sm hover:opacity-90 active:scale-95 transition-all">
+        <Link href="/checkout" id="cart-page-checkout-btn" className="group flex items-center justify-center gap-2 w-full py-3.5 rounded-xl gradient-primary text-primary-foreground font-semibold text-sm hover:opacity-90 active:scale-95 transition-all">
           Proceed to Checkout
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
         </Link>

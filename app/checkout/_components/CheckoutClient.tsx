@@ -247,7 +247,7 @@ export default function CheckoutClient() {
       <div className="flex flex-col items-center gap-6 py-24 text-center">
         <CreditCard className="w-12 h-12 text-muted" aria-hidden="true" />
         <p className="text-lg font-semibold text-foreground">Sign in to checkout</p>
-        <button id="checkout-signin-btn" onClick={signInWithGoogle} className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold">
+        <button id="checkout-signin-btn" onClick={signInWithGoogle} className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold">
           Sign in with Google
         </button>
       </div>
@@ -307,7 +307,7 @@ export default function CheckoutClient() {
           <button
             id="checkout-retry-btn"
             onClick={handleRetry}
-            className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+            className="flex items-center gap-2 px-6 py-2.5 rounded-xl gradient-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity"
           >
             <RefreshCw className="w-4 h-4" aria-hidden="true" />
             Try Again
@@ -449,7 +449,11 @@ export default function CheckoutClient() {
         <button
           id="checkout-pay-btn"
           type="submit"
+<<<<<<< HEAD
           className="flex items-center justify-center gap-2 w-full min-h-[52px] py-4 rounded-xl gradient-primary text-white font-bold text-base hover:opacity-90 active:scale-95 transition-all shadow-md"
+=======
+          className="flex items-center justify-center gap-2 w-full py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-base hover:opacity-90 active:scale-95 transition-all"
+>>>>>>> ae55f5f5c2e2b60a4602238e89ababd16fc153a5
         >
           <CreditCard className="w-5 h-5" aria-hidden="true" />
           Pay ₹{subtotal.toLocaleString("en-IN")}

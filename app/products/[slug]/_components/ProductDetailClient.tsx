@@ -92,7 +92,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
-                  className={`w-4 h-4 ${i < 4 ? "text-yellow-400 fill-yellow-400" : "text-muted"}`}
+                  className={`w-4 h-4 ${i < 4 ? "text-warning fill-warning" : "text-muted"}`}
                   aria-hidden="true"
                 />
               ))}
@@ -152,8 +152,8 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               disabled={loading || product.stock === 0}
               className={`group flex items-center justify-center gap-2 flex-1 min-h-[48px] py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed ${
                 added
-                  ? "bg-success text-white"
-                  : "gradient-primary text-white hover:opacity-90 active:scale-95"
+                  ? "bg-success text-primary-foreground"
+                  : "gradient-primary text-primary-foreground hover:opacity-90 active:scale-95"
               }`}
               aria-label={user ? "Add to cart" : "Sign in to add to cart"}
             >

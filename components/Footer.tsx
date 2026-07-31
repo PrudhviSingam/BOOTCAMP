@@ -52,7 +52,7 @@ export default function Footer() {
                 className="gradient-primary flex h-8 w-8 items-center justify-center rounded-lg
                            group-hover:scale-110 transition-transform duration-200"
               >
-                <ShoppingBag className="h-4 w-4 text-white" aria-hidden="true" />
+                <ShoppingBag className="h-4 w-4 text-primary-foreground" aria-hidden="true" />
               </span>
               <span className="text-xl font-bold text-foreground">
                 Nex<span className="gradient-text">Cart</span>
@@ -156,7 +156,7 @@ export default function Footer() {
                 type="button"
                 aria-label="Subscribe to newsletter"
                 className="gradient-primary shrink-0 px-4 py-2.5 text-xs font-semibold
-                           text-white transition-opacity hover:opacity-90"
+                           text-primary-foreground transition-opacity hover:opacity-90"
               >
                 Subscribe
               </button>

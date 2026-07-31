@@ -122,7 +122,7 @@ export default function Navbar() {
                         unoptimized
                       />
                     ) : (
-                      <div className="w-7 h-7 rounded-full gradient-primary flex items-center justify-center text-white">
+                      <div className="w-7 h-7 rounded-full gradient-primary flex items-center justify-center text-primary-foreground">
                         <UserIcon className="w-4 h-4" aria-hidden="true" />
                       </div>
                     )}
@@ -153,7 +153,7 @@ export default function Navbar() {
                           setIsProfileOpen(false);
                           await signOutUser();
                         }}
-                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors"
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-error hover:bg-error/10 transition-colors"
                       >
                         <LogOut className="w-4 h-4" aria-hidden="true" />
                         <span>Sign out</span>
@@ -165,7 +165,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => signInWithGoogle()}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-primary text-white text-sm font-medium shadow-sm hover:opacity-95 active:scale-[0.98] transition-all duration-150"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl gradient-primary text-primary-foreground text-sm font-medium shadow-sm hover:opacity-95 active:scale-[0.98] transition-all duration-150"
                 >
                   <LogIn className="w-4 h-4" aria-hidden="true" />
                   <span>Sign in with Google</span>
@@ -227,7 +227,7 @@ export default function Navbar() {
                         unoptimized
                       />
                     ) : (
-                      <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-white">
+                      <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-primary-foreground">
                         <UserIcon className="w-4 h-4" aria-hidden="true" />
                       </div>
                     )}
@@ -246,7 +246,7 @@ export default function Navbar() {
                       setIsMenuOpen(false);
                       await signOutUser();
                     }}
-                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium text-destructive hover:bg-destructive/10 transition-colors"
+                    className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-base font-medium text-error hover:bg-error/10 transition-colors"
                   >
                     <LogOut className="w-5 h-5" aria-hidden="true" />
                     <span>Sign out</span>
@@ -259,7 +259,7 @@ export default function Navbar() {
                     setIsMenuOpen(false);
                     signInWithGoogle();
                   }}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl gradient-primary text-white text-base font-medium shadow-sm active:scale-[0.98] transition-all"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl gradient-primary text-primary-foreground text-base font-medium shadow-sm active:scale-[0.98] transition-all"
                 >
                   <LogIn className="w-5 h-5" aria-hidden="true" />
                   <span>Sign in with Google</span>

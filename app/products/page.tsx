@@ -117,7 +117,7 @@ export default function ProductsPage() {
           </p>
           <button 
             onClick={() => { setSearch(""); setCategory(""); }}
-            className="px-6 py-2.5 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-xl font-medium transition-colors duration-200"
+            className="px-6 py-2.5 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground rounded-xl font-medium transition-colors duration-200"
           >
             Clear all filters
           </button>

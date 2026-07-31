@@ -165,7 +165,11 @@ export default function OrderConfirmationClient({ orderId }: { orderId: string }
         <Link
           href="/products"
           id="order-confirm-continue-btn"
+<<<<<<< HEAD
           className="group inline-flex items-center justify-center gap-2 px-7 py-3 min-h-[48px] rounded-xl gradient-primary text-white font-semibold text-sm hover:opacity-90 active:scale-95 transition-all"
+=======
+          className="group inline-flex items-center gap-2 px-7 py-3 rounded-xl gradient-primary text-primary-foreground font-semibold text-sm hover:opacity-90 active:scale-95 transition-all"
+>>>>>>> ae55f5f5c2e2b60a4602238e89ababd16fc153a5
         >
           Continue Shopping
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
