@@ -5,6 +5,9 @@
  */
 import Razorpay from "razorpay";
 
+const keyId     = process.env.RAZORPAY_KEY_ID     || "rzp_test_placeholder";
+const keySecret = process.env.RAZORPAY_KEY_SECRET || "placeholder_secret";
+
 if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
   console.warn(
     "[razorpay] RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET is not set. Payment features will be unavailable."
@@ -12,6 +15,6 @@ if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
 }
 
 export const razorpay = new Razorpay({
-  key_id:     process.env.RAZORPAY_KEY_ID     ?? "",
-  key_secret: process.env.RAZORPAY_KEY_SECRET ?? "",
+  key_id:     keyId,
+  key_secret: keySecret,
 });

@@ -21,6 +21,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://nexcart.dev"),
   title: {
     template: "%s | NexCart",
     default: "NexCart — Premium Products, Fast Delivery",

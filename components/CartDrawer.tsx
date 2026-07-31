@@ -145,8 +145,8 @@ export default function CartDrawer() {
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           aria-label={`Decrease quantity of ${item.name}`}
-                          disabled={item.quantity <= 1}
-                          className="w-9 h-9 flex items-center justify-center text-muted hover:text-foreground hover:bg-surface disabled:opacity-40 transition-colors"
+                          disabled={item.quantity <= 1 || loading}
+                          className="w-7 h-7 flex items-center justify-center text-muted hover:text-foreground hover:bg-surface disabled:opacity-40 transition-colors"
                         >
                           <Minus className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
@@ -159,7 +159,8 @@ export default function CartDrawer() {
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
                           aria-label={`Increase quantity of ${item.name}`}
-                          className="w-9 h-9 flex items-center justify-center text-muted hover:text-foreground hover:bg-surface transition-colors"
+                          disabled={loading}
+                          className="w-7 h-7 flex items-center justify-center text-muted hover:text-foreground hover:bg-surface disabled:opacity-40 transition-colors"
                         >
                           <Plus className="w-3.5 h-3.5" aria-hidden="true" />
                         </button>
@@ -167,7 +168,8 @@ export default function CartDrawer() {
                       <button
                         onClick={() => removeFromCart(item.id)}
                         aria-label={`Remove ${item.name} from cart`}
-                        className="w-9 h-9 flex items-center justify-center rounded-lg text-muted hover:text-error hover:bg-error/10 transition-colors"
+                        disabled={loading}
+                        className="w-7 h-7 flex items-center justify-center rounded-lg text-muted hover:text-error hover:bg-error/10 disabled:opacity-40 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" aria-hidden="true" />
                       </button>

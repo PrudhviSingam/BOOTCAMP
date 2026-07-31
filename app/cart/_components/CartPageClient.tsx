@@ -78,15 +78,15 @@ export default function CartPageClient() {
               <p className="text-primary font-bold">₹{(item.price * item.quantity).toLocaleString("en-IN")}</p>
               <div className="flex items-center gap-2 mt-1">
                 <div className="flex items-center gap-1 bg-background border border-border rounded-lg overflow-hidden">
-                  <button onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1} aria-label={`Decrease quantity of ${item.name}`} className="w-8 h-8 flex items-center justify-center text-muted hover:text-foreground disabled:opacity-40 transition-colors">
+                  <button onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1 || loading} aria-label={`Decrease quantity of ${item.name}`} className="w-8 h-8 flex items-center justify-center text-muted hover:text-foreground disabled:opacity-40 transition-colors">
                     <Minus className="w-3 h-3" aria-hidden="true" />
                   </button>
                   <span className="w-8 text-center text-sm font-semibold text-foreground" aria-label={`Quantity: ${item.quantity}`}>{item.quantity}</span>
-                  <button onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label={`Increase quantity of ${item.name}`} className="w-8 h-8 flex items-center justify-center text-muted hover:text-foreground transition-colors">
+                  <button onClick={() => updateQuantity(item.id, item.quantity + 1)} disabled={loading} aria-label={`Increase quantity of ${item.name}`} className="w-8 h-8 flex items-center justify-center text-muted hover:text-foreground disabled:opacity-40 transition-colors">
                     <Plus className="w-3 h-3" aria-hidden="true" />
                   </button>
                 </div>
-                <button onClick={() => removeFromCart(item.id)} aria-label={`Remove ${item.name} from cart`} className="w-8 h-8 flex items-center justify-center rounded-lg text-muted hover:text-error hover:bg-error/10 transition-colors">
+                <button onClick={() => removeFromCart(item.id)} disabled={loading} aria-label={`Remove ${item.name} from cart`} className="w-8 h-8 flex items-center justify-center rounded-lg text-muted hover:text-error hover:bg-error/10 disabled:opacity-40 transition-colors">
                   <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
                 </button>
               </div>
