@@ -1,9 +1,25 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import ProductDetailClient from "./_components/ProductDetailClient";
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+async function getProductBySlug(slug: string) {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("slug", slug)
+      .maybeSingle();
+
+    if (error) return null;
+    return data;
+  } catch {
+    return null;
+  }
 }
 
 // ── Dynamic SEO metadata ───────────────────────────────────────
@@ -12,38 +28,24 @@ export async function generateMetadata(
   _parent: ResolvingMetadata
 ): Promise<Metadata> {
   const { slug } = await params;
-  try {
-    const res  = await fetch(`${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/api/products/${slug}`, { cache: "no-store" });
-    const data = await res.json();
-    const product = data.product;
-    if (!product) return { title: "Product Not Found" };
-    return {
+  const product = await getProductBySlug(slug);
+  if (!product) return { title: "Product Not Found" };
+
+  return {
+    title:       product.name,
+    description: product.description,
+    openGraph: {
       title:       product.name,
       description: product.description,
-      openGraph: {
-        title:       product.name,
-        description: product.description,
-        images:      product.image_url ? [{ url: product.image_url }] : [],
-      },
-    };
-  } catch {
-    return { title: "Product" };
-  }
+      images:      product.image_url ? [{ url: product.image_url }] : [],
+    },
+  };
 }
 
 // ── Page ──────────────────────────────────────────────────────
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-
-  // Server-fetch product for initial render
-  let product = null;
-  try {
-    const res  = await fetch(`${process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"}/api/products/${slug}`, { cache: "no-store" });
-    const data = await res.json();
-    product    = data.product ?? null;
-  } catch {
-    // fall through to notFound
-  }
+  const product = await getProductBySlug(slug);
 
   if (!product) notFound();
 
