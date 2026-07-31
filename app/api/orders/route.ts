@@ -83,17 +83,10 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Failed to create order items" }, { status: 500 });
     }
 
-    // 3) Clear the user's cart_items rows
-    const { error: cartError } = await supabase
-      .from("cart_items")
-      .delete()
-      .eq("user_id", user_id);
-
-    if (cartError) {
-      console.warn("[/api/orders POST] Cart clear failed:", cartError);
-    }
-
-    // 4) Return the new order's id
+    // 3) Return the new order's id
+    // NOTE: Cart is NOT cleared here — it is cleared client-side only after
+    // Razorpay payment is successfully verified, so that a failed/cancelled
+    // payment doesn't wipe the user's cart.
     return Response.json({ success: true, order_id: order.id, id: order.id }, { status: 201 });
   } catch (error) {
     console.error("[/api/orders POST]", error);

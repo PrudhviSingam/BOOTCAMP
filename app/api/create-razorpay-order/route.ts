@@ -18,10 +18,10 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "order_id is required" }, { status: 400 });
     }
 
-    // 1) Fetch the order's total_amount from Supabase
+    // 1) Fetch the order from Supabase
     const { data: order, error: fetchError } = await supabase
       .from("orders")
-      .select("id, total_amount, status")
+      .select("id, total_amount, status, razorpay_order_id")
       .eq("id", order_id)
       .single();
 
@@ -29,26 +29,40 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Order not found" }, { status: 404 });
     }
 
+    // Guard: do not allow creating a payment for an already-paid order
+    if (order.status === "paid") {
+      return Response.json(
+        { error: "Order is already paid" },
+        { status: 409 }
+      );
+    }
+
     // Convert rupees → paise (Razorpay requires amount in smallest currency unit)
     const amountPaise = Math.round(order.total_amount * 100);
 
-    // 2) Create a Razorpay order
-    const rzpOrder = await razorpay.orders.create({
-      amount:   amountPaise,
-      currency: "INR",
-      receipt:  `receipt_${order_id.slice(0, 16)}`,
-    });
+    // 2) Reuse an existing Razorpay order if one was already created for this
+    //    order (e.g. on retry), otherwise create a new one.
+    let razorpayOrderId = order.razorpay_order_id;
 
-    // 3) Save the Razorpay order ID back into our Supabase order
-    const { error: updateError } = await supabase
-      .from("orders")
-      .update({ razorpay_order_id: rzpOrder.id })
-      .eq("id", order_id);
+    if (!razorpayOrderId) {
+      const rzpOrder = await razorpay.orders.create({
+        amount:   amountPaise,
+        currency: "INR",
+        receipt:  `receipt_${order_id.slice(0, 16)}`,
+      });
+      razorpayOrderId = rzpOrder.id;
 
-    if (updateError) throw updateError;
+      // 3) Save the Razorpay order ID back into our Supabase order
+      const { error: updateError } = await supabase
+        .from("orders")
+        .update({ razorpay_order_id: razorpayOrderId })
+        .eq("id", order_id);
+
+      if (updateError) throw updateError;
+    }
 
     return Response.json({
-      razorpay_order_id: rzpOrder.id,
+      razorpay_order_id: razorpayOrderId,
       amount:            amountPaise,
     });
   } catch (error) {
