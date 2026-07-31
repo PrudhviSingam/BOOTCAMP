@@ -93,6 +93,7 @@ export default function CheckoutClient() {
       currency:           "INR",
       name:               "NexCart",
       description:        "Secure payment for your order",
+      image:              "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=120&q=80",
       order_id:           razorpayOrderId,
       prefill: {
         name:    form.name,
@@ -118,27 +119,32 @@ export default function CheckoutClient() {
           });
           const verifyData = await verifyRes.json();
           if (!verifyRes.ok || !verifyData.success) {
-            throw new Error("Signature verification failed.");
+            throw new Error(verifyData.error ?? "Signature verification failed.");
           }
           await clearCart();
           router.push(`/order-confirmation/${supabaseOrderId}`);
-        } catch (err) {
-          setErrorMsg("Payment completed but verification failed. Please contact support.");
+        } catch (err: unknown) {
+          const msg = err instanceof Error ? err.message : "Payment completed but verification failed. Please contact support.";
+          setErrorMsg(msg);
           setStep("error");
         }
       },
       modal: {
         ondismiss: async () => {
           // Check if the order was already paid (edge case)
-          const statusRes = await fetch(`/api/order-status/${supabaseOrderId}`);
-          const statusData = await statusRes.json();
-          if (statusData.order?.status === "paid") {
-            await clearCart();
-            router.push(`/order-confirmation/${supabaseOrderId}`);
-          } else {
-            setErrorMsg("Payment was not completed. You can try again.");
-            setStep("error");
+          try {
+            const statusRes = await fetch(`/api/order-status/${supabaseOrderId}`);
+            const statusData = await statusRes.json();
+            if (statusData.order?.status === "paid" || statusData.status === "paid") {
+              await clearCart();
+              router.push(`/order-confirmation/${supabaseOrderId}`);
+              return;
+            }
+          } catch (e) {
+            console.error("[CheckoutClient] Order status check failed", e);
           }
+          setErrorMsg("Payment was not completed. You can try again.");
+          setStep("error");
         },
       },
     };
@@ -183,10 +189,7 @@ export default function CheckoutClient() {
       const rzpData = await rzpRes.json();
 
       if (!rzpRes.ok || !rzpData.razorpay_order_id) {
-        // Razorpay not configured — redirect to confirmation as demo
-        await clearCart();
-        router.push(`/order-confirmation/${newOrderId}`);
-        return;
+        throw new Error(rzpData.error ?? "Failed to create Razorpay order.");
       }
 
       setRzpOrderId(rzpData.razorpay_order_id);
