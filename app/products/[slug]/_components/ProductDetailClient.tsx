@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -30,10 +31,12 @@ interface Product {
 }
 
 export default function ProductDetailClient({ product }: { product: Product }) {
+  const router = useRouter();
   const { user } = useAuth();
   const { addToCart, setDrawerOpen, loading } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded]       = useState(false);
+  const [buying, setBuying]     = useState(false);
 
   async function handleAddToCart() {
     if (!user) {
@@ -44,6 +47,21 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     setAdded(true);
     setDrawerOpen(true);
     setTimeout(() => setAdded(false), 2500);
+  }
+
+  async function handleBuyNow() {
+    if (!user) {
+      await signInWithGoogle();
+      return;
+    }
+    setBuying(true);
+    try {
+      await addToCart(product.id, quantity);
+      router.push("/checkout");
+    } catch (error) {
+      console.error("Failed to process Buy Now:", error);
+      setBuying(false);
+    }
   }
 
   return (
@@ -180,13 +198,22 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               )}
             </button>
 
-            <Link
-              href="/checkout"
+            <button
               id="product-detail-buy-now-btn"
-              className="flex items-center justify-center gap-2 flex-1 py-3.5 rounded-xl bg-surface border border-border text-foreground font-semibold text-sm hover:border-primary/40 transition-colors"
+              type="button"
+              onClick={handleBuyNow}
+              disabled={loading || buying || product.stock === 0}
+              className="flex items-center justify-center gap-2 flex-1 py-3.5 rounded-xl bg-surface border border-border text-foreground font-semibold text-sm hover:border-primary/40 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              Buy Now
-            </Link>
+              {buying ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+                  Processing...
+                </>
+              ) : (
+                "Buy Now"
+              )}
+            </button>
           </div>
         </div>
       </div>
