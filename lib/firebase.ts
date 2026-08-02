@@ -10,6 +10,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   onAuthStateChanged,
   type Auth,
@@ -54,8 +55,8 @@ export async function signInWithGoogle(): Promise<User | null> {
     console.warn("Firebase not configured — set NEXT_PUBLIC_FIREBASE_* env vars.");
     return null;
   }
+  const provider = new GoogleAuthProvider();
   try {
-    const provider = new GoogleAuthProvider();
     const result = await signInWithPopup(firebaseAuth, provider);
     return result.user;
   } catch (error: any) {
@@ -64,6 +65,15 @@ export async function signInWithGoogle(): Promise<User | null> {
       error?.code === "auth/cancelled-popup-request"
     ) {
       console.info("[Firebase Auth] User closed or cancelled the sign-in popup.");
+      return null;
+    }
+    if (error?.code === "auth/popup-blocked") {
+      console.warn("[Firebase Auth] Popup blocked by browser. Falling back to redirect...");
+      try {
+        await signInWithRedirect(firebaseAuth, provider);
+      } catch (redirectErr) {
+        console.error("[Firebase Auth] Redirect sign-in failed:", redirectErr);
+      }
       return null;
     }
     console.error("[Firebase Auth] Google Sign-In error:", error);
