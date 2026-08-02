@@ -9,7 +9,7 @@
  */
 import { type NextRequest } from "next/server";
 import { razorpay } from "@/lib/razorpay";
-import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
+import { supabaseAdmin as supabase } from "@/lib/supabase";
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,7 +38,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Convert rupees → paise (Razorpay requires amount in smallest currency unit)
-    const amountPaise = Math.round(order.total_amount * 100);
+    const amountPaise = Math.round(Number(order.total_amount) * 100);
+
+    if (amountPaise <= 0) {
+      return Response.json({ error: "Invalid order amount" }, { status: 400 });
+    }
 
     // 2) Reuse an existing Razorpay order if one was already created for this
     //    order (e.g. on retry) to prevent duplicate orders and double-charge risk.
@@ -51,15 +55,24 @@ export async function POST(request: NextRequest) {
         currency: "INR",
         receipt:  `receipt_${order_id.slice(0, 16)}`,
       });
+
+      if (!rzpOrder || !rzpOrder.id) {
+        throw new Error("Razorpay failed to return an order ID");
+      }
       razorpayOrderId = rzpOrder.id;
 
       // 4) Save the Razorpay order ID back into our Supabase order
-      const { error: updateError } = await supabase
+      const { data: updatedOrders, error: updateError } = await supabase
         .from("orders")
         .update({ razorpay_order_id: razorpayOrderId })
-        .eq("id", order_id);
+        .eq("id", order_id)
+        .select();
 
-      if (updateError) throw updateError;
+      if (updateError || !updatedOrders || updatedOrders.length === 0) {
+        console.error("[/api/create-razorpay-order] Failed to update order with razorpay_order_id", updateError);
+        return Response.json({ error: "Failed to link Razorpay order to database" }, { status: 500 });
+      }
+    }
     }
 
     return Response.json({
