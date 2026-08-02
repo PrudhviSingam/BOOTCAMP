@@ -9,7 +9,6 @@ import {
   RefreshCw,
   AlertCircle,
 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
 
 interface DashboardMetrics {
   totalOrders: number;
@@ -27,31 +26,11 @@ export default function AdminDashboardPage() {
     setLoading(true);
     setError("");
     try {
-      // 1. Fetch orders data (status values)
-      const { data: orders, error: ordersErr } = await supabase
-        .from("orders")
-        .select("status");
-
-      if (ordersErr) throw ordersErr;
-
-      // 2. Fetch total products count
-      const { count: productsCount, error: productsErr } = await supabase
-        .from("products")
-        .select("id", { count: "exact", head: true });
-
-      if (productsErr) throw productsErr;
-
-      const totalOrders   = orders?.length ?? 0;
-      const pendingOrders = orders?.filter((o) => o.status === "pending").length ?? 0;
-      const paidOrders    = orders?.filter((o) => o.status === "paid").length ?? 0;
-      const totalProducts = productsCount ?? 0;
-
-      setMetrics({
-        totalOrders,
-        pendingOrders,
-        paidOrders,
-        totalProducts,
-      });
+      const res = await fetch("/api/admin/metrics");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed to load dashboard metrics");
+      
+      setMetrics(data.metrics);
     } catch (err: unknown) {
       console.error("[AdminDashboard] Error loading metrics:", err);
       setError("Failed to load dashboard metrics. Check database connection.");

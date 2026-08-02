@@ -8,7 +8,7 @@
  * DELETE /api/cart?id=xxx               → remove item
  */
 import { type NextRequest } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 // ── GET — fetch cart items ──────────────────────────────────────
 export async function GET(request: NextRequest) {

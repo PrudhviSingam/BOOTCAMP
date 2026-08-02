@@ -138,6 +138,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
             <span className="text-sm text-muted font-medium">Quantity</span>
             <div className="flex items-center bg-surface border border-border rounded-xl overflow-hidden">
               <button
+                suppressHydrationWarning
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 disabled={quantity <= 1}
                 aria-label="Decrease quantity"
@@ -152,6 +153,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 {quantity}
               </span>
               <button
+                suppressHydrationWarning
                 onClick={() => setQuantity((q) => Math.min(product.stock || 99, q + 1))}
                 disabled={quantity >= (product.stock || 99)}
                 aria-label="Increase quantity"
@@ -166,6 +168,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <button
               id="product-detail-add-to-cart-btn"
+              suppressHydrationWarning
               onClick={handleAddToCart}
               disabled={loading || product.stock === 0}
               className={`group flex items-center justify-center gap-2 flex-1 min-h-[48px] py-3.5 rounded-xl font-semibold text-sm transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed ${added
@@ -199,6 +202,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
 
             <button
               id="product-detail-buy-now-btn"
+              suppressHydrationWarning
               type="button"
               onClick={handleBuyNow}
               disabled={loading || buying || product.stock === 0}

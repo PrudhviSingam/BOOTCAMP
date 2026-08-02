@@ -9,7 +9,7 @@
  */
 import { type NextRequest } from "next/server";
 import { razorpay } from "@/lib/razorpay";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 export async function POST(request: NextRequest) {
   try {

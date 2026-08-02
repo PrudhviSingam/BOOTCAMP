@@ -126,7 +126,7 @@ insert into products (name, description, price, image_url, category, stock, slug
     'Wireless Noise-Cancelling Headphones',
     'Premium over-ear headphones with active noise cancellation, 30-hour battery life, and studio-quality sound. Foldable design with plush ear cushions for all-day comfort.',
     4999.00,
-    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80',
+    'https://m.media-amazon.com/images/I/31nvao7P-9L._SL500_.jpg',
     'Electronics',
     50,
     'wireless-noise-cancelling-headphones'
@@ -135,19 +135,19 @@ insert into products (name, description, price, image_url, category, stock, slug
     'Mechanical Gaming Keyboard',
     'Compact TKL layout with tactile blue switches, per-key RGB backlighting, and aircraft-grade aluminum frame. Anti-ghosting for precise keystrokes in every session.',
     3499.00,
-    'https://images.unsplash.com/photo-1601445638532-c90e31ece6e6?w=600&q=80',
+    '/images/mechanical-keyboard.png',
     'Electronics',
     35,
     'mechanical-gaming-keyboard'
   ),
   (
-    'Minimalist Leather Wallet',
-    'Slim bifold wallet crafted from full-grain leather. Holds up to 8 cards plus cash. RFID-blocking lining protects your contactless cards from skimming.',
-    899.00,
-    'https://images.unsplash.com/photo-1627123424574-724758594e93?w=600&q=80',
-    'Accessories',
+    'Premium Wireless Mouse',
+    'Ergonomic wireless gaming mouse with adjustable DPI, RGB lighting, and 50-hour battery life. Ultra-low latency connection for competitive gaming.',
+    2999.00,
+    'https://img.evetech.co.za/repository/ez/how-much-should-you-spend-on-a-wireless-gaming-mou-banner.webp',
+    'Electronics',
     120,
-    'minimalist-leather-wallet'
+    'premium-wireless-mouse'
   ),
   (
     'Stainless Steel Water Bottle',
@@ -159,22 +159,22 @@ insert into products (name, description, price, image_url, category, stock, slug
     'stainless-steel-water-bottle'
   ),
   (
-    'Portable Bluetooth Speaker',
+    'Marshall Portable Speaker',
     'Compact 20W speaker with 360-degree sound, deep bass, and IPX7 waterproofing. Up to 12 hours of playback. Pair two speakers for stereo mode.',
-    2199.00,
-    'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80',
+    21999.00,
+    'https://images.ctfassets.net/javen7msabdh/7N04j6wBgof5Uw2e03iCc3/2f9dd0a80c40cbcd88303676eae0993b/01-middleton-front_side-desktop.jpeg',
     'Electronics',
     60,
-    'portable-bluetooth-speaker'
+    'marshall-portable-speaker'
   ),
   (
-    'Organic Cotton Tote Bag',
-    'Durable 100% organic cotton canvas tote with reinforced handles and interior zip pocket. Perfect for grocery runs, beach days, or daily commutes.',
-    599.00,
-    'https://images.unsplash.com/photo-1597484661973-ee6cd0b6482c?w=600&q=80',
-    'Lifestyle',
+    'Premium Swing Study Lamp',
+    'Adjustable metal swing arm desk lamp with heavy base and c-clamp. Features multiple brightness levels and eye-care LED technology for focused reading and studying.',
+    1599.00,
+    'https://m.media-amazon.com/images/I/71ey0OvpzcL._SL1500_.jpg',
+    'Home',
     300,
-    'organic-cotton-tote-bag'
+    'premium-swing-study-lamp'
   ),
   (
     'Smart Fitness Tracker',
@@ -186,11 +186,11 @@ insert into products (name, description, price, image_url, category, stock, slug
     'smart-fitness-tracker'
   ),
   (
-    'Ceramic Pour-Over Coffee Set',
-    'Handcrafted ceramic dripper and server set for the perfect pour-over ritual. Includes reusable stainless steel filter. Holds 600ml, dishwasher-safe.',
-    1799.00,
-    'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80',
-    'Kitchen',
+    'HP Mini Printer',
+    'Portable, lightweight mini printer perfect for travel or small workspaces. Features fast printing speeds, wireless connectivity, and high-quality photo prints on the go.',
+    12999.00,
+    'https://i.rtings.com/assets/products/OrmPKs2a/hp-officejet-250/design-medium.jpg',
+    'Electronics',
     45,
-    'ceramic-pour-over-coffee-set'
+    'hp-mini-printer'
   );

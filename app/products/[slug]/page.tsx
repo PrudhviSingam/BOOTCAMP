@@ -1,6 +1,6 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { notFound } from "next/navigation";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 import ProductDetailClient from "./_components/ProductDetailClient";
 
 interface Props {

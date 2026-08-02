@@ -6,7 +6,7 @@
  * Data source: Supabase `products` table, matched on the `slug` column.
  */
 import { type NextRequest } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 // ── Data-fetching function ────────────────────────────────────────────────
 /**

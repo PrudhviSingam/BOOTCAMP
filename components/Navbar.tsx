@@ -87,6 +87,7 @@ export default function Navbar() {
             {/* Shopping Cart Icon with Item-Count Badge */}
             <button
               type="button"
+              suppressHydrationWarning
               onClick={() => setDrawerOpen(true)}
               className="relative p-2.5 rounded-xl bg-surface border border-border text-muted hover:text-foreground hover:border-primary/50 transition-all duration-150"
               aria-label={`Shopping cart with ${cartCount} items`}
@@ -189,6 +190,7 @@ export default function Navbar() {
             {/* Mobile Hamburger Menu Button (below md breakpoint) */}
             <button
               type="button"
+              suppressHydrationWarning
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2.5 rounded-xl bg-surface border border-border text-muted hover:text-foreground transition-all duration-150"
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}

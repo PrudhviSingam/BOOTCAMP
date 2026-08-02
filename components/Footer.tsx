@@ -147,6 +147,7 @@ export default function Footer() {
             <div className="flex w-full overflow-hidden rounded-xl border border-border bg-background">
               <input
                 type="email"
+                suppressHydrationWarning
                 placeholder="your@email.com"
                 aria-label="Email address for newsletter"
                 className="flex-1 bg-transparent px-3 py-2.5 text-sm text-foreground
@@ -154,6 +155,7 @@ export default function Footer() {
               />
               <button
                 type="button"
+                suppressHydrationWarning
                 aria-label="Subscribe to newsletter"
                 className="gradient-primary shrink-0 px-4 py-2.5 text-xs font-semibold
                            text-primary-foreground transition-opacity hover:opacity-90"

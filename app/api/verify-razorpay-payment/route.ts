@@ -10,7 +10,7 @@
  */
 import { type NextRequest } from "next/server";
 import { createHmac } from "crypto";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 export async function POST(request: NextRequest) {
   try {

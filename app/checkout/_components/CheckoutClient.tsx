@@ -449,11 +449,7 @@ export default function CheckoutClient() {
         <button
           id="checkout-pay-btn"
           type="submit"
-<<<<<<< HEAD
-          className="flex items-center justify-center gap-2 w-full min-h-[52px] py-4 rounded-xl gradient-primary text-white font-bold text-base hover:opacity-90 active:scale-95 transition-all shadow-md"
-=======
-          className="flex items-center justify-center gap-2 w-full py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-base hover:opacity-90 active:scale-95 transition-all"
->>>>>>> ae55f5f5c2e2b60a4602238e89ababd16fc153a5
+          className="flex items-center justify-center gap-2 w-full py-4 rounded-xl gradient-primary text-primary-foreground font-bold text-base hover:opacity-90 active:scale-95 transition-all shadow-md"
         >
           <CreditCard className="w-5 h-5" aria-hidden="true" />
           Pay ₹{subtotal.toLocaleString("en-IN")}

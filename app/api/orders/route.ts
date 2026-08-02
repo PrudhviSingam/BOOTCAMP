@@ -5,7 +5,7 @@
  * GET  /api/orders?id=xxx — fetch a single order by ID (for order confirmation page)
  */
 import { type NextRequest } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin as supabase } from "@/lib/supabase-admin";
 
 // ── POST — create order ────────────────────────────────────────
 export async function POST(request: NextRequest) {
