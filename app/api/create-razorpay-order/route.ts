@@ -73,7 +73,6 @@ export async function POST(request: NextRequest) {
         return Response.json({ error: "Failed to link Razorpay order to database" }, { status: 500 });
       }
     }
-    }
 
     return Response.json({
       razorpay_order_id: razorpayOrderId,
