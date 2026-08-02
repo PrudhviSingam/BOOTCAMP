@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["10.3.88.219", "10.3.88.219:3000", "localhost:3000"],
+  turbopack: {
+    root: __dirname,
+  },
   images: {
     remotePatterns: [
       {

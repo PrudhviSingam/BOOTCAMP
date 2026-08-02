@@ -54,9 +54,21 @@ export async function signInWithGoogle(): Promise<User | null> {
     console.warn("Firebase not configured — set NEXT_PUBLIC_FIREBASE_* env vars.");
     return null;
   }
-  const provider = new GoogleAuthProvider();
-  const result = await signInWithPopup(firebaseAuth, provider);
-  return result.user;
+  try {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(firebaseAuth, provider);
+    return result.user;
+  } catch (error: any) {
+    if (
+      error?.code === "auth/popup-closed-by-user" ||
+      error?.code === "auth/cancelled-popup-request"
+    ) {
+      console.info("[Firebase Auth] User closed or cancelled the sign-in popup.");
+      return null;
+    }
+    console.error("[Firebase Auth] Google Sign-In error:", error);
+    return null;
+  }
 }
 
 export async function signOutUser(): Promise<void> {
